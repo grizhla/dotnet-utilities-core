@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
 
-namespace dotnet_utilities_core.Base.JsonUtilities;
+namespace Grizhla.UtilitiesCore.Helpers.JsonUtilities;
 
 public static partial class JsonSerializerUtility
 {
