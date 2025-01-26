@@ -8,6 +8,7 @@ using Grizhla.UtilitiesCore.EF.Basic;
 using Grizhla.UtilitiesCore.EF.StructuralUtilities;
 using Grizhla.UtilitiesCore.Helpers.JsonUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Grizhla.UtilitiesCore.EF;
 
@@ -25,15 +26,15 @@ public class GrizhlaDBContext : DbContext
 	public override int SaveChanges()
 	{
 		this.ChangeTracker.DetectChanges();
-		var added = this.ChangeTracker.Entries()
+		EntityEntry[] added = this.ChangeTracker.Entries()
 								.Where(t => t.State == EntityState.Added)
 								.ToArray();
 
-		foreach (var entry in added)
+		foreach (EntityEntry entry in added)
 		{
 			if (entry.Entity is GrizhlaRecord)
 			{
-				var track = entry.Entity as GrizhlaRecord;
+				GrizhlaRecord? track = entry.Entity as GrizhlaRecord;
 				track!.CreatedAt = DateTime.Now;
 				if (historyEnabled)
 				{
@@ -49,20 +50,20 @@ public class GrizhlaDBContext : DbContext
 			}
 		}
 
-		var modified = this.ChangeTracker.Entries()
+		EntityEntry[] modified = this.ChangeTracker.Entries()
 								.Where(t => t.State == EntityState.Modified)
 								.ToArray();
 
 
-		foreach (var entry in modified)
+		foreach (EntityEntry entry in modified)
 		{
 			if (entry.Entity is GrizhlaRecord)
 			{
-				var track = entry.Entity as GrizhlaRecord;
+				GrizhlaRecord? track = entry.Entity as GrizhlaRecord;
 				track!.LastModified = DateTime.Now;
 				if (historyEnabled)
 				{
-					var orginalValues = entry.OriginalValues.ToObject() as GrizhlaRecord;
+					GrizhlaRecord? orginalValues = entry.OriginalValues.ToObject() as GrizhlaRecord;
 					this.__GrizhlaHistory.Add(new()
 					{
 						ModelName = entry.GetType().Name,
@@ -77,12 +78,12 @@ public class GrizhlaDBContext : DbContext
 
 		if (historyEnabled)
 		{
-			var deleted = this.ChangeTracker.Entries()
+			EntityEntry[] deleted = this.ChangeTracker.Entries()
 								.Where(t => t.State == EntityState.Deleted)
 								.ToArray();
-			foreach (var entry in deleted)
+			foreach (EntityEntry entry in deleted)
 			{
-				var track = entry.Entity as GrizhlaRecord;
+				GrizhlaRecord? track = entry.Entity as GrizhlaRecord;
 				this.__GrizhlaHistory.Add(new()
 				{
 					ModelName = entry.GetType().Name,
