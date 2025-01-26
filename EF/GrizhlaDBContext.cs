@@ -85,8 +85,8 @@ public class GrizhlaDBContext : DbContext
 				var track = entry.Entity as GrizhlaRecord;
 				this.__GrizhlaHistory.Add(new()
 				{
-					PrimaryKey = track!.GetPrimaryKey()!,
 					ModelName = entry.GetType().Name,
+					PrimaryKey = track!.GetPrimaryKey()!,
 					DBMethod = DBMethod.Delete,
 					NewState = null,
 					OldState = JsonSerializerUtility.Serialize(track!)

@@ -8,15 +8,17 @@ using System.Threading.Tasks;
 
 namespace Grizhla.UtilitiesCore.EF.Basic;
 
-[Table($"__{nameof(GrizhlaHistory)}")]
+[Table(nameof(GrizhlaHistory))]
 public class GrizhlaHistory
 {
-	[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public int HistoryId { get; set; }
+	[Key]
+	public Guid HistoryId { get; set; } = Guid.NewGuid();
 
+	[Column(TypeName = "varchar(63)")]
 	public required string ModelName { get; set; }
 
-	public required string PrimaryKey { get; set; }
+	[Column(TypeName = "varchar(63)")]
+	public required Guid PrimaryKey { get; set; }
 
 	public required DBMethod DBMethod { get; set; }
 
@@ -26,7 +28,7 @@ public class GrizhlaHistory
 	[Column(TypeName = "jsonb")]
 	public string? NewState { get; set; }
 
-	public DateTime OnTime { get; set; } = DateTime.Now;
+	public DateTime Time { get; set; } = DateTime.Now;
 }
 
 public enum DBMethod

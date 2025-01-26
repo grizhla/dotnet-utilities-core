@@ -13,5 +13,5 @@ public abstract class GrizhlaRecord
 
 	public DateTime CreatedAt { get; set; }
 
-	public abstract string GetPrimaryKey();
+	public abstract Guid GetPrimaryKey();
 }
