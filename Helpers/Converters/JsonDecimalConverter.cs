@@ -16,9 +16,7 @@ public class JsonDecimalConverter : JsonConverter<Decimal>
         JsonSerializerOptions options
     )
     {
-        if (string.IsNullOrEmpty(reader.GetString()))
-            return 0;
-        return Decimal.Parse(reader.GetString());
+        return Decimal.Parse(reader.GetString() ?? "0");
     }
 
     public override void Write(Utf8JsonWriter writer, decimal value, JsonSerializerOptions options)

@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 namespace Grizhla.UtilitiesCore.Helpers.Comparers;
 
 public static class DictionaryEqualityComparer<TKey, TValue>
+    where TKey : notnull
 {
     public static bool Equals(Dictionary<TKey, TValue> x, Dictionary<TKey, TValue> y)
     {
